@@ -62,20 +62,23 @@ pipeline {
    stage('Update Deployment File') {
     steps {
         withCredentials([usernamePassword(
-            credentialsId: 'git-hub',
+            credentialsId: 'github',
             usernameVariable: 'GITHUB_USERNAME',
             passwordVariable: 'GITHUB_TOKEN'
         )]) {
             sh '''
-                git config --global --add safe.directory /var/lib/jenkins/workspace/spring-boot
+                git config --global --add safe.directory "$WORKSPACE"
 
                 git config user.email "jojuambily103@gmail.com"
-                git config user.name "${GIT_USER_NAME}"
+                git config user.name "ayanshaji"
 
-                sed -i "s|image: .*|image: ${DOCKER_IMAGE}:${BUILD_NUMBER}|g" spring-boot-app-manifests/deployment.yml
+                sed -i "s|image: .*|image: ayanshaji/springboot-app:${BUILD_NUMBER}|g" spring-boot-app-manifests/deployment.yml
 
                 git add spring-boot-app-manifests/deployment.yml
-                git commit -m "Update springboot app image tag to ${BUILD_NUMBER} [skip ci]" || echo "No changes to commit"
+
+                git commit -m "Update springboot app image tag to ${BUILD_NUMBER} [skip ci]" || true
+
+                git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/ayanshaji/java-maven-sonar-argocd.git
 
                 git push origin HEAD:main
             '''
