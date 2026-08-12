@@ -5,6 +5,15 @@ pipeline {
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
   }
+
+//adding enviornment
+
+ environment {
+        DOCKER_IMAGE = "ayanshaji/springboot-app"
+        GIT_REPO_NAME = "java-maven-sonar-argocd"
+        GIT_USER_NAME = "ayanshaji"
+}
+
   stages {
     stage('Checkout') {
       steps {
