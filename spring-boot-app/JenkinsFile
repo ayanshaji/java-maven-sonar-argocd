@@ -67,8 +67,7 @@ pipeline {
             passwordVariable: 'GITHUB_TOKEN'
         )]) {
             sh '''
-                git init
-                git remote add origin https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git
+                git config --global --add safe.directory /var/lib/jenkins/workspace/spring-boot
 
                 git config user.email "jojuambily103@gmail.com"
                 git config user.name "${GIT_USER_NAME}"
